@@ -21,7 +21,7 @@
                 },
                 {
                     "name": "encodingFormat",
-                    "label": "Encoding format from profile",
+                    "label": "Encoding format from profile in Dataset",
                     "help": "Encoding format help from profile",
                     "type": [
                         "URL",
@@ -48,7 +48,7 @@
                 },
                 {
                     "name": "encodingFormat",
-                    "label": "Encoding format from profile",
+                    "label": "Encoding format from profile in File",
                     "help": "Encoding format help from profile",
                     "type": [
                         "URL",
