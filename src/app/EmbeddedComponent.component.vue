@@ -68,11 +68,13 @@ import crateFile4 from "../examples/item/large-crate/ro-crate-metadata.json";
 import crateFile5 from "../examples/item/ridiculously-big-collection/ro-crate-metadata.json";
 import crateFile6 from "../examples/item/item-with-relationship-and-action/ro-crate-metadata.json";
 import crateFile7 from "../examples/item/multiple-types/ro-crate-metadata.json";
+import crateFileSingleFile from "../examples/single-file.json";
 import profile2 from "../examples/profile/profile-with-all-primitives-and-groups.json";
 import profile4 from "../examples/profile/nyingarn-item-profile.json";
 import profile5 from "../examples/profile/profile-with-all-primitives.json";
 import profile6 from "../examples/profile/profile-with-resolve.json";
 import profile8 from "../examples/profile/profile-to-test-multiple-types.json";
+import profileSingleFile from "../examples/single-file-profile.json";
 const lookup = new Lookup();
 
 const data = reactive({
@@ -90,6 +92,7 @@ const data = reactive({
         { name: "Large Crate", value: crateFile4 },
         { name: "Ridiculously Big Crate", value: crateFile5 },
         { name: "Item with Relationship and Action", value: crateFile6 },
+        { name: "Single file", value: crateFileSingleFile },
     ],
     profiles: [
         { value: profile5, name: profile5.metadata.name },
@@ -97,6 +100,7 @@ const data = reactive({
         { value: profile8, name: profile8.metadata.name },
         { value: profile4, name: profile4.metadata.name },
         { value: profile6, name: profile6.metadata.name },
+        { value: profileSingleFile, name: profileSingleFile.metadata.name },
     ],
     languages: [
         { name: "English", value: "en" },
