@@ -34,6 +34,7 @@
                 <el-button @click="toggleReverseLinkBrowser">toggle reverse links</el-button>
                 <el-button @click="back"><</el-button>
                 <el-button @click="forward">></el-button>
+                <el-button @click="testNavigation">Navigate to TestFolder</el-button>
             </div>
             <describo-crate-builder
                 ref="describo"
@@ -55,6 +56,7 @@
                 :show-controls="data.configuration.showControls"
                 @error="logErrors"
                 @warning="logWarnings"
+                :entity-id="data.entityId"
             />
         </div>
 
@@ -136,6 +138,7 @@ import crateFile4 from "../examples/item/large-crate/ro-crate-metadata.json";
 import crateFile5 from "../examples/item/ridiculously-big-collection/ro-crate-metadata.json";
 import crateFile6 from "../examples/item/item-with-relationship-and-action/ro-crate-metadata.json";
 import crateFile7 from "../examples/item/multiple-types/ro-crate-metadata.json";
+import crateFile8 from "../examples/item/test-crate.json";
 import profile1 from "../examples/profile/profile-with-all-primitives.json";
 import profile2 from "../examples/profile/profile-with-all-primitives-and-groups.json";
 import profile3 from "../examples/profile/profile-to-test-multiple-types.json";
@@ -144,6 +147,8 @@ import profile5 from "../examples/profile/nyingarn-item-profile.json";
 import profile6 from "../examples/profile/vocabulary-creation-profile.json";
 import profile7 from "../examples/profile/profile-with-constraints.json";
 import profile8 from "../examples/profile/profile-to-test-inverse-associations.json";
+import profile9 from "../examples/profile/entity-profile.json";
+import profile10 from "../examples/profile/crate-profile.json";
 const lookup = new Lookup();
 import { validateProfile } from "../crate-builder/helpers.js";
 
@@ -162,6 +167,7 @@ const data = reactive({
         { name: "Large Crate", value: crateFile4 },
         { name: "Ridiculously Big Crate", value: crateFile5 },
         { name: "Item with Relationship and Action", value: crateFile6 },
+        { name: "Navigation Test", value: crateFile8 },
     ],
     profiles: [
         { value: profile1, name: profile1.metadata.name },
@@ -172,6 +178,8 @@ const data = reactive({
         { value: profile6, name: profile6.metadata.name },
         { value: profile7, name: profile7.metadata.name },
         { value: profile8, name: profile8.metadata.name },
+        { value: profile9, name: profile9.metadata.name },
+        { value: profile10, name: profile10.metadata.name },
     ],
     languages: [
         { name: "English", value: "en" },
@@ -196,9 +204,16 @@ const data = reactive({
         // resetTabOnEntityChange: true,
         // resetTabOnProfileChange: true,
         showControls: true,
+        entityId: "./",
     },
 });
 let describo = ref();
+
+function testNavigation() {
+    data.entityId = "TestFolder/";
+    setCrate("Navigation Test")
+    setProfile("Entity Profile");
+}
 
 function setCrate(name) {
     let crate = name ? data.crates.filter((c) => c.name === name)[0].value : undefined;

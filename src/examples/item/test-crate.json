@@ -1,0 +1,70 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "@arpPid": "https://dataverse.org/schema/file/arpPid",
+            "hasPart": "http://schema.org/hasPart",
+            "subject": "http://purl.org/dc/terms/subject",
+            "author": "http://purl.org/dc/terms/creator",
+            "dsDescriptionValue": "https://dataverse.org/schema/citation/dsDescriptionValue",
+            "title": "http://purl.org/dc/terms/title",
+            "datasetContact": "https://dataverse.org/schema/citation/datasetContact",
+            "authorAffiliation": "https://dataverse.org/schema/citation/authorAffiliation",
+            "datasetContactName": "https://dataverse.org/schema/citation/datasetContactName",
+            "datePublished": "https://schema.org/datePublished",
+            "license": "https://schema.org/license",
+            "datasetContactEmail": "https://dataverse.org/schema/citation/datasetContactEmail",
+            "authorName": "https://dataverse.org/schema/citation/authorName",
+            "dateOfDeposit": "http://purl.org/dc/terms/dateSubmitted",
+            "dsDescription": "https://dataverse.org/schema/citation/dsDescription",
+            "contentSize": "https://schema.org/contentSize",
+            "datasetContactAffiliation": "https://dataverse.org/schema/citation/datasetContactAffiliation",
+            "encodingFormat": "https://schema.org/encodingFormat",
+            "depositor": "https://dataverse.org/schema/citation/depositor"
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "name": "./",
+            "license": {
+                "@id": "http://creativecommons.org/publicdomain/zero/1.0"
+            },
+            "datePublished": "2024-09-04T11:08:38.53+02:00",
+            "subject": "Computer and Information Science",
+            "dateOfDeposit": "2024-09-04",
+            "title": "Test Dataset",
+            "hasPart": [
+                {
+                    "@id": "TestFolder/"
+                },
+                {
+                    "@id": "test1"
+                }
+            ]
+        },
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "name": "ro-crate-metadata.json",
+            "about": {
+                "@id": "./"
+            },
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            }
+        },
+        {
+            "@id": "TestFolder/",
+            "@type": "Dataset",
+            "name": "TestFolder"
+        },
+        {
+            "@id": "test1",
+            "@type": "File",
+            "name": "test1",
+            "contentSize": "1"
+        }
+    ]
+}
