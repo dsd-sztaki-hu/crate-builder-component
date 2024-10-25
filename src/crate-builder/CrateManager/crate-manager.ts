@@ -790,11 +790,11 @@ let r = cm.addEntity(entity);
 
         const e = structuredClone(entity);
         let normalisedEntity = normalise(e, this.graphLength);
-        normalisedEntity = this.__confirmNoClash({
+        const noClashCheck = this.__confirmNoClash({
             entity: normalisedEntity,
         }) as NormalisedEntityDefinition;
-        if (!normalisedEntity) {
-            return this.getEntity({ id: e["@id"] }) as NormalisedEntityDefinition;
+        if (!noClashCheck) {
+            return this.getEntity({ id: normalisedEntity["@id"] }) as NormalisedEntityDefinition;
         }
 
         // set all properties, other than core props, to array
