@@ -794,8 +794,7 @@ let r = cm.addEntity(entity);
             entity: normalisedEntity,
         }) as NormalisedEntityDefinition;
         if (!normalisedEntity) {
-            normalisedEntity = normalise(e, this.graphLength);
-            return this.getEntity({ id: normalisedEntity["@id"] }) as NormalisedEntityDefinition;
+            return this.getEntity({ id: e["@id"] }) as NormalisedEntityDefinition;
         }
 
         // set all properties, other than core props, to array
