@@ -104,7 +104,7 @@ const props = defineProps({
         required: true,
     },
     value: {
-        type: [String, Number, Boolean, Date],
+        type: [String, Number, Boolean, Date, Array],
         required: true,
     },
     idx: {
@@ -176,7 +176,7 @@ function isValue() {
     return props?.definition?.type === "Value";
 }
 function isSelect() {
-    return props?.definition?.values?.includes(props.value) ? true : false;
+    return props?.definition?.values?.includes(props.value) || definitionIncludes('Select') ? true : false;
 }
 function isUrl(string) {
     let result = isURL(string);
