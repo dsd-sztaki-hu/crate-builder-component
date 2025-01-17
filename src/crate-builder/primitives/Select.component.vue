@@ -110,7 +110,7 @@ watch(
 
 function save() {
     // For checkbox style input (handlesMultipleValues == true) the value is an array
-    if (props.definition.type.format === 'checkbox' && !isArray(data.internalValue)) {
+    if (props.definition.style === 'checkbox' && !isArray(data.internalValue)) {
         data.internalValue = [data.internalValue];
     }
     $emit("save:property", {
