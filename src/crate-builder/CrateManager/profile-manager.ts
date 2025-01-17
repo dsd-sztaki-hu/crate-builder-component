@@ -29,8 +29,51 @@ import type {
 export class ProfileManager {
     profile?: NormalisedProfile;
     constructor({ profile }: { profile?: NormalisedProfile }) {
-        if (profile) this.profile = profile;
+        if (profile) {
+            this.profile = profile;
+            this.__processInputs();
+        }
     }
+
+    /**
+     * Process input definitions for certain types.
+     *
+     * For now it takes care of setting 'handlesMultipleValues' for input types, which can have multiple values
+     * but handle all values themselves and not require a new render property added for each new value. This is the
+     * case for checbox style selects. It provides the same functionality as a normal select but all values are
+     * visible and selectable at once and not one by one.
+     *
+     * It also makes sure that for radio style selects "multiple" is always set to "false", as radio input only
+     * provides a single value selected form many.
+     *
+     * @private
+     */
+    private __processInputs() {
+        if (!this.profile?.classes) return;
+
+        for (const className in this.profile.classes) {
+            const classDefinition = this.profile.classes[className];
+            if (!classDefinition.inputs) continue;
+
+            classDefinition.inputs = classDefinition.inputs.map(input => {
+                if (input.type.includes("Select") && input.style === "checkbox") {
+                    return {
+                        ...input,
+                        multiple: false, // must set explicitly, otherwise will be set to true implicitly later
+                        handlesMultipleValues: true
+                    };
+                } else if (input.type.includes("Select") && input.style === "radio") {
+                    return {
+                        ...input,
+                        multiple: false, // on case of radio, it must always be false
+                    };
+                }
+
+                return input;
+            });
+        }
+    }
+
     /**
      *
      * Get the layout for an entity from the profile

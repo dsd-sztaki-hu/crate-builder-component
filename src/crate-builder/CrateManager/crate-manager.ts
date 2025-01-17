@@ -1154,6 +1154,10 @@ cm.setProperty({ id: "./", property: "author", value: 3 });
 
             // and add a @reverse link
             this.__addReverse({ id, property, value });
+        } else if(isArray(value)) {
+            // In case of handlesMultipleValues inputs, like checkbox select the value is an array itself.
+            // We need to call toRaw() on it to make it a normal array, ie. get rid of the vue array proxy
+            (entity[property] as any[]) = toRaw(value);
         } else {
             // value doesn't make sense - bail
             throw new Error(`value must be a string, number, boolean or object with '@id'`);
@@ -1230,8 +1234,14 @@ cm.updateProperty({ id: "./", property: "author", idx: 1, value: "new" });
                 entity.name = String(value);
             }
         } else {
-            if (idx !== 0 && !idx) throw new Error(`setProperty' requires 'idx' to be defined`);
-            (entity[property] as any[])[idx] = value;
+            // In case of handlesMultipleValues inputs, like checkbox select the value is an array itself.
+            // We need to call toRaw() on it to make it a normal array, ie. get rid of the vue array proxy
+            if (isArray(value)) {
+                (entity[property] as any[]) = toRaw(value);
+            } else {
+                if (idx !== 0 && !idx) throw new Error(`setProperty' requires 'idx' to be defined`);
+                (entity[property] as any[])[idx] = value;
+            }
         }
 
         // manage timestamps
@@ -1266,8 +1276,21 @@ cm.deleteProperty({ id: "./", property: "author", idx: 1 });
             entity = this.crate["@graph"][indexRef];
             if (isUndefined(entity)) return;
 
-            entity[property].splice(idx, 1);
-            if (!entity[property].length) delete entity[property];
+            let { propertyDefinition } = this.pm.getPropertyDefinition({
+                property: property,
+                entity: entity,
+            });
+
+            // In case of input, which handles multiple values on its own, like a checkbox style select, the array is
+            // handled as a single value, so we need to delete all values at once
+            // For other multivalued inputs, we delete one by one.
+            if (propertyDefinition.handlesMultipleValues === true) {
+                delete entity[property];
+            } else {
+                entity[property].splice(idx, 1);
+                if (!entity[property].length) delete entity[property];
+
+            }
         } else if (idx === undefined) {
             const indexRef = this.entityIdIndex[id];
             entity = this.crate["@graph"][indexRef];
