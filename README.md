@@ -4,7 +4,7 @@ For the main Describo project visit: https://www.npmjs.com/package/@describo/cra
 
 This is a fork of the Crate Builder Component for use in the [ARP project](https://researchdata.hu/en). Contains additions and modifications necessary for the ARP project that are not present/required/supported by the original component. We, however, try to keep compatibilioty with the original project as much as possible and update to its new version. 
 
-The package version matches the latest version  of the original Crate Builder project (eg. 0.80.0) and an addition `arp-X` marks the patch version for ARP. For example, `0.80.0.arp-12` is based on the `0.80.0` version of the Crate Builder Component and is the `12th` patched version of it for use in ARP.
+The package version matches the latest version  of the original Crate Builder project (eg. 0.80.0) and an additional `-arp.X` marks the patch version for ARP. For example, `0.80.0-arp.12` is based on the `0.80.0` version of the Crate Builder Component and is the `12th` patched version of it for use in ARP.
 
 # Crate Builder Component
 

@@ -1,6 +1,6 @@
 {
-    "name": "@arppproject/crate-builder-component",
-    "version": "0.80.0.arp-1",
+    "name": "@arpproject/crate-builder-component",
+    "version": "0.80.0-arp.1",
     "description": "A VueJS component for assembling an RO-Crate",
     "main": "./src/crate-builder/index.js",
     "type": "module",
