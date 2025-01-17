@@ -16,6 +16,7 @@ import type {
     ProfileInput,
     EntityReference,
 } from "../types";
+import {toRaw} from "vue";
 
 /**
  * @class
@@ -30,7 +31,7 @@ export class ProfileManager {
     profile?: NormalisedProfile;
     constructor({ profile }: { profile?: NormalisedProfile }) {
         if (profile) {
-            this.profile = profile;
+            this.profile = toRaw(profile);
             this.__processInputs();
         }
     }
