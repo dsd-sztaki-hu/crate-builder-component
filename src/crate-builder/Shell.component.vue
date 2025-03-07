@@ -7,6 +7,7 @@
             @load:entity="setCurrentEntity"
             @save:crate="saveCrate"
             @save:entity:template="saveEntityAsTemplate"
+            @warning="handleWarning"
         />
     </div>
 </template>
@@ -305,5 +306,9 @@ function saveEntityAsTemplate(data) {
         resolveDepth: parseInt(data.resolveDepth),
     });
     $emit("save:entity:template", { entity });
+}
+
+function handleWarning(warnings) {
+    $emit("warning", { warnings });
 }
 </script>

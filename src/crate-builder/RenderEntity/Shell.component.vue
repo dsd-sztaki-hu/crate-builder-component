@@ -329,6 +329,7 @@ const $emit = defineEmits([
     "unlink:entity",
     "update:entity",
     "delete:entity",
+    "warning",
 ]);
 defineExpose({
     setTab: (tabName) => (data.activeTab = tabName),
@@ -433,6 +434,11 @@ function createEntity(patch) {
         propertyId: patch.propertyId,
         json: patch.json,
     });
+    
+    let warnings = cm.value.getWarnings();
+    if (warnings.hasWarning) {
+        $emit("warning", warnings);
+    }
     refresh();
     saveCrate();
 }

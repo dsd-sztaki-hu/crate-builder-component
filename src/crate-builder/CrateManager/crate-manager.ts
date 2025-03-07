@@ -41,6 +41,7 @@ interface warningsInterface {
     hasWarning: Boolean;
     init: { description: string; messages: string[] };
     invalidIdentifier: { description: string; entity: UnverifiedEntityDefinition[] };
+    clash: { description: string; messages: string[] };
 }
 
 const entityDateCreatedProperty = "hasCreationDate";
@@ -165,6 +166,10 @@ export class CrateManager {
                 description: `The entity identifier (@id) has spaces in it that should be encoded. Describo will do this to pass the validate test but the data must be corrected manually.`,
                 entity: [],
             },
+            clash: {
+                description: `The entity already exists in the graph. It will be ignored.`,
+                messages: [],
+            }
         };
         const t0 = performance.now();
 
@@ -794,7 +799,11 @@ let r = cm.addEntity(entity);
             entity: normalisedEntity,
         }) as NormalisedEntityDefinition;
         if (!noClashCheck) {
+            this.__setWarning("clash", `The entity ${normalisedEntity["@id"]} already exists. Crate set back to it's original state.`);
             return this.getEntity({ id: normalisedEntity["@id"] }) as NormalisedEntityDefinition;
+        } else {
+            this.warnings.hasWarning = false;
+            this.warnings.clash.messages = [];
         }
 
         // set all properties, other than core props, to array
