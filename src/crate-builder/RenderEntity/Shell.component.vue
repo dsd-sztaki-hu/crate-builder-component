@@ -435,6 +435,11 @@ function createEntity(patch) {
         propertyId: patch.propertyId,
         json: patch.json,
     });
+    
+    let warnings = cm.value.getWarnings();
+    if (warnings.hasWarning) {
+        $emit("warning", warnings);
+    }
     refresh();
     saveCrate();
 }
