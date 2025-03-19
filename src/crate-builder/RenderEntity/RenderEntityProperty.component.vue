@@ -108,6 +108,7 @@ import isPlainObject from "lodash-es/isPlainObject.js";
 import { $t } from "../i18n";
 const pm = inject(profileManagerKey);
 import { useStateStore } from "../store.js";
+import isArray from "lodash-es/isArray";
 const state = useStateStore();
 
 const props = defineProps({
@@ -184,8 +185,21 @@ const propertyDefinition = computed(() => {
     return cloneDeep(propertyDefinition);
 });
 function sortInstances() {
-    simpleInstances.value = props.values
-        .map((v, i) => {
+    // Inputs, which handle multiple values themselves, like checkbox style input needs a single element, which is an
+    // array of its handled values.
+    if (propertyDefinition.value.handlesMultipleValues === true) {
+        if (isArray(props.values) && props.values.length == 0) {
+            // Not set -> an empty array
+            simpleInstances.value = props.values;
+        }  else {
+            // Set -> a single array with an array inside with theh actual values
+            simpleInstances.value = [props.values];
+        }
+    } else {
+        simpleInstances.value = props.values
+    }
+
+    simpleInstances.value = simpleInstances.value.map((v, i) => {
             if (!isPlainObject(v)) {
                 return { idx: i, value: v };
             }

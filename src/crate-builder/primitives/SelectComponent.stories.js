@@ -21,13 +21,50 @@ const Template = {
     }),
 };
 
-export const SelectComponentStory = {
+export const DefaultSelect = {
+    ...Template,
+    args: {
+        property: "select",
+        value: "a",
+        definition: {
+            values: ["a", "b", "c"]
+            // no style, defaults to dropdown
+        },
+    },
+};
+
+export const DropdownSelect = {
     ...Template,
     args: {
         property: "select",
         value: "a",
         definition: {
             values: ["a", "b", "c"],
+            style: "dropdown"
+        },
+    },
+};
+
+export const RadioSelect = {
+    ...Template,
+    args: {
+        property: "select",
+        value: "a",
+        definition: {
+            values: ["a", "b", "c"],
+            style: "radio"
+        },
+    },
+};
+
+export const CheckboxSelect = {
+    ...Template,
+    args: {
+        property: "select",
+        value: ["a"],
+        definition: {
+            values: ["a", "b", "c"],
+            style: "checkbox"
         },
     },
 };

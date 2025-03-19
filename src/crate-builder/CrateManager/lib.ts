@@ -19,6 +19,7 @@ export function isURL(value: string | number | boolean | undefined | null): bool
     if (!value) return false;
     if (isNumber(value)) return false;
     if (isBoolean(value)) return false;
+    if (isArray(value)) return false;
     if (value.match(/arcp:\/\/name,.*/)) return true;
     if (value.match(/arcp:\/\/uuid,.*/)) return true;
     if (value.match(/arcp:\/\/ni,sha-256;,.*/)) return true;

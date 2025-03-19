@@ -265,6 +265,9 @@ export type ProfileInput = {
     hide?: boolean;
     group?: string;
     type: string[];
+    style?: "checkbox" | "radio" | "dropdown";
+    handledMultipleValues?: boolean;
+    values?: string[] | { "@id": string; "@type": string; name: string }[];
 };
 export interface NormalisedProfile {
     metadata: {
