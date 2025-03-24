@@ -35,12 +35,14 @@ interface errorsInterface {
     missingIdentifier: { description: string; entity: UnverifiedEntityDefinition[] };
     missingTypeDefinition: { description: string; entity: UnverifiedEntityDefinition[] };
     invalidIdentifier: { description: string; entity: UnverifiedEntityDefinition[] };
+    clash: { description: string; messages: string[] };
 }
 
 interface warningsInterface {
     hasWarning: Boolean;
     init: { description: string; messages: string[] };
     invalidIdentifier: { description: string; entity: UnverifiedEntityDefinition[] };
+    clash: { description: string; messages: string[] };
 }
 
 const entityDateCreatedProperty = "hasCreationDate";
@@ -154,6 +156,10 @@ export class CrateManager {
                 description: `The entity identifier (@id) is not valid. See https://github.com/describo/crate-builder-component/blob/master/README.identifiers.md for more information`,
                 entity: [],
             },
+            clash: {
+                description: `The entity already exists and has clash errors.`,
+                messages: [],
+            }
         };
         this.warnings = {
             hasWarning: false,
@@ -165,6 +171,10 @@ export class CrateManager {
                 description: `The entity identifier (@id) has spaces in it that should be encoded. Describo will do this to pass the validate test but the data must be corrected manually.`,
                 entity: [],
             },
+            clash: {
+                description: `The entity already exists in the graph. It will be ignored.`,
+                messages: [],
+            }
         };
         const t0 = performance.now();
 
@@ -794,7 +804,11 @@ let r = cm.addEntity(entity);
             entity: normalisedEntity,
         }) as NormalisedEntityDefinition;
         if (!noClashCheck) {
+            this.__setWarning("clash", `The entity ${normalisedEntity["@id"]} already exists. Crate set back to it's original state.`);
             return this.getEntity({ id: normalisedEntity["@id"] }) as NormalisedEntityDefinition;
+        } else {
+            this.warnings.hasWarning = false;
+            this.warnings.clash.messages = [];
         }
 
         // set all properties, other than core props, to array
@@ -1211,6 +1225,23 @@ cm.updateProperty({ id: "./", property: "author", idx: 1, value: "new" });
 
         if (this.coreProperties.includes(property)) {
             if (property === "@id") {
+                // First verify the new ID won't clash
+                const tempEntity = structuredClone(entity);
+                tempEntity["@id"] = value as string;
+
+                const noClash = this.__confirmNoClash({
+                    entity: tempEntity,
+                    mintNewId: false
+                });
+
+                if (!noClash) {
+                    this.__setWarning("clash", `The entity ${tempEntity["@id"]} already exists. Crate set back to it's original state.`);
+                    return this.getEntity({ id: tempEntity["@id"] }) as NormalisedEntityDefinition;
+                } else {
+                    this.warnings.hasWarning = false;
+                    this.warnings.clash.messages = [];
+                }
+
                 //  update @id
                 this.__updateEntityId({
                     oldId: (entity as EntityReference)?.["@id"],
@@ -1818,6 +1849,8 @@ let entity = cm.exportEntityTemplate({ id: '#person', resolveDepth: 1 })
     __setError(error: keyof typeof this.errors, entity: string | UnverifiedEntityDefinition) {
         if (error === "init") {
             this.errors.init.messages.push(entity as string);
+        } else if (error === "clash") {
+            this.errors.clash.messages.push(entity as string);
         } else if (error in this.errors) {
             (this.errors[error] as any).entity.push(entity as UnverifiedEntityDefinition);
         }
@@ -1850,9 +1883,14 @@ let entity = cm.exportEntityTemplate({ id: '#person', resolveDepth: 1 })
         // if it looks like the root dataset - throw an error
         //  can't have multiple root datasets
         if (entity["@id"] === "./") {
-            throw new Error(
-                `You can't add an entity with id: './' as that will clash with the root dataset.`
-            );
+            this.__setError("clash", `You can't add an entity with id: './' as that will clash with the root dataset.`);
+            return false;
+            // throw new Error(
+            //     `You can't add an entity with id: './' as that will clash with the root dataset.`
+            // );
+        } else {
+            this.errors.hasError = false;
+            this.errors.clash.messages = [];
         }
         // if it looks like the root descriptor - throw an error
         //  can't have multiple root descriptors
@@ -1895,6 +1933,13 @@ let entity = cm.exportEntityTemplate({ id: '#person', resolveDepth: 1 })
         entity["@id"] = newId;
         entity = normalise(entity, this.graphLength);
         entity = this.__confirmNoClash({ entity, mintNewId: false });
+        if (!entity) {
+            this.__setWarning("clash", `The entity ${entity["@id"]} already exists. Crate set back to it's original state.`);
+            return this.getEntity({ id: entity[indexRef] }) as NormalisedEntityDefinition;
+        } else {
+            this.warnings.hasWarning = false;
+            this.warnings.clash.messages = [];
+        }
         // console.log("NEW ENTITY", JSON.stringify(entity, null, 2));
 
         // get the entity using the original id and then walk the properties forward

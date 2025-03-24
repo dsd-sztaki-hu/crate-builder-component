@@ -329,6 +329,8 @@ const $emit = defineEmits([
     "unlink:entity",
     "update:entity",
     "delete:entity",
+    "warning",
+    "error"
 ]);
 defineExpose({
     setTab: (tabName) => (data.activeTab = tabName),
@@ -433,6 +435,11 @@ function createEntity(patch) {
         propertyId: patch.propertyId,
         json: patch.json,
     });
+    
+    let warnings = cm.value.getWarnings();
+    if (warnings.hasWarning) {
+        $emit("warning", warnings);
+    }
     refresh();
     saveCrate();
 }
@@ -531,6 +538,17 @@ function deleteProperty(patch) {
     saveCrate();
 }
 function saveCrate() {
+    // check for errors and warnings before save
+    let warnings = cm.value.getWarnings();
+    if (warnings.hasWarning) {
+        $emit("warning", warnings);
+    }
+
+    let errors = cm.value.getErrors();
+    if (errors.hasError) {
+        $emit("error", errors);
+    }
+    
     $emit("save:crate");
 }
 function saveEntityAsTemplate(data) {
