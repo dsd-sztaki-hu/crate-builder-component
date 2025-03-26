@@ -74,6 +74,26 @@
                     "type": ["Text"]
                 },
                 {
+                    "id": "https://schema.org/text6",
+                    "name": "text6",
+                    "label": "Text field readonly single value",
+                    "help": "Text field readonly single value",
+                    "required": false,
+                    "multiple": false,
+                    "readonly": true,
+                    "type": ["Text"]
+                },
+                {
+                    "id": "https://schema.org/text7",
+                    "name": "text7",
+                    "label": "Text field readonly multiple values",
+                    "help": "Text field readonly multiple values",
+                    "required": false,
+                    "multiple": true,
+                    "readonly": true,
+                    "type": ["Text"]
+                },
+                {
                     "id": "https://schema.org/textarea",
                     "name": "textarea",
                     "label": "Textarea",

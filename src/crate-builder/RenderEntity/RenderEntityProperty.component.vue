@@ -175,7 +175,8 @@ const profileWarnMissingProperty = computed(() => {
     return pm.value.profile.warnMissingProperty;
 });
 const showAddControl = computed(() => {
-    return propertyDefinition.value?.multiple || !props?.values?.length;
+    return !propertyDefinition.value?.readonly && 
+           (propertyDefinition.value?.multiple || !props?.values?.length);
 });
 const propertyDefinition = computed(() => {
     let { propertyDefinition } = pm.value.getPropertyDefinition({
