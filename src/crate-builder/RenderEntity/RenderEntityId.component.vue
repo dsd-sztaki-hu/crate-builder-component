@@ -6,6 +6,14 @@
             class="w-2/3 xl:w-4/5 flex flex-row describo-property-value"
             v-if="!state.configuration.readonly"
         >
+            <button
+                v-if="isURL(props.entity['@id'])"
+                class="text-[--el-color-primary] hover:text-[--el-color-primary-light-3] active:text-[--el-color-primary-dark-2] mr-2 flex items-center"
+                @click="openInNewTab(props.entity['@id'])"
+                title="Open in new tab"
+            >
+                <FontAwesomeIcon :icon="faArrowUpRightFromSquare" />
+            </button>
             <div
                 v-if="
                     props.entity['@id'] === './' ||
@@ -60,5 +68,9 @@ let data = reactive({
 });
 async function save(data) {
     emit("update:entity", data);
+}
+
+function openInNewTab(url) {
+    window.open(url, '_blank');
 }
 </script>
