@@ -11,7 +11,7 @@
             <div class="flex flex-row space-x-1">
                 <el-select
                     v-model="data.selectedEntityType"
-                    placeholder="Filter by type"
+                    :placeholder="$t('filter_by_type')"
                     clearable
                     filterable
                 >

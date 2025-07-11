@@ -31,6 +31,7 @@ const en = {
 
         // DialogBrowseEntities.component.vue
         search_for_connection: "Search for a connection",
+        filter_by_type: "Filter by type",
 
         // DialogSaveCrateAsTemplate.component.vue
         save_template_prompt: "Save this crate as a template for re-use",

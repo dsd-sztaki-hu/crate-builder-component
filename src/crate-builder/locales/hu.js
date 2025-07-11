@@ -31,6 +31,7 @@ const hu = {
 
         // DialogBrowseEntities.component.vue
         search_for_connection: "Kapcsolt entitás keresése",
+        filter_by_type: "Típus szerinti szűrés",
 
         // DialogSaveCrateAsTemplate.component.vue
         save_template_prompt: "Csomag mentése mintaként",
