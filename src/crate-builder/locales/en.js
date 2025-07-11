@@ -138,6 +138,7 @@ const en = {
 
         // RenderReverseConnections.component.vue
         // search_for_connection: defined before
+        links_to_this_entity: "Links to this entity:",
     },
 };
 

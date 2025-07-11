@@ -1,7 +1,7 @@
 <template>
     <div class="w-full p-2">
         <div class="flex flex-row">
-            <div class="text-lg">Links to this entity:</div>
+            <div class="text-lg">{{$t("links_to_this_entity")}}</div>
             <div class="flex-grow"></div>
         </div>
         <div class="flex flex-col space-y-2">
