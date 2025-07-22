@@ -1,16 +1,18 @@
 <template>
-    <div>
-        <RenderEntity
-            ref="renderEntity"
-            v-if="ready && !error"
-            :entity="contextEntity"
-            @load:entity="setCurrentEntity"
-            @save:crate="saveCrate"
-            @save:entity:template="saveEntityAsTemplate"
-            @warning="handleWarning"
-            @error="handleError"
-        />
-    </div>
+    <el-config-provider :locale="props.language === 'hu' ? hu : en">
+        <div>
+            <RenderEntity
+                ref="renderEntity"
+                v-if="ready && !error"
+                :entity="contextEntity"
+                @load:entity="setCurrentEntity"
+                @save:crate="saveCrate"
+                @save:entity:template="saveEntityAsTemplate"
+                @warning="handleWarning"
+                @error="handleError"
+            />
+        </div>
+    </el-config-provider>
 </template>
 
 <script setup>
@@ -28,6 +30,9 @@ import {
     computed,
     getCurrentInstance,
 } from "vue";
+import { ElConfigProvider } from 'element-plus'
+import hu from 'element-plus/es/locale/lang/hu'
+import en from 'element-plus/es/locale/lang/en'
 import { crateManagerKey, profileManagerKey, lookupsKey } from "./RenderEntity/keys.js";
 import isEmpty from "lodash-es/isEmpty.js";
 import isFunction from "lodash-es/isFunction";
@@ -183,6 +188,7 @@ onBeforeUnmount(() => {
 });
 
 async function init() {
+    console.log("init", props.language);
     const t0 = performance.now();
     if (!props.crate || isEmpty(props.crate)) {
         ready.value = false;
