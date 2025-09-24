@@ -1,0 +1,38 @@
+{
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "@vocab": "http://schema.org/",
+      "txc": {
+        "@id": "http://purl.archive.org/textcommons/terms#"
+      },
+      "@base": null,
+      "language": "http://purl.org/dc/terms/language"
+    }
+  ],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "name": "ro-crate-metadata.json",
+      "conformsTo": {
+        "@id": "https://w3id.org/ro/crate/1.1"
+      },
+      "about": {
+        "@id": "./"
+      },
+      "@reverse": {}
+    },
+    {
+      "@id": "./",
+      "@type": "Dataset",
+      "name": "./",
+      "language": ["English", "Hungarian"],
+      "@reverse": {
+        "about": {
+          "@id": "ro-crate-metadata.json"
+        }
+      }
+    }
+  ]
+}
