@@ -1,22 +1,16 @@
 <template>
     <div class="flex flex-col describo-property-type-select">
         <div v-if="data.hasValidValues && (!props.definition.style || props.definition.style === 'dropdown')">
-            <el-select
+            <el-select-v2
                 v-if="data.hasValidValues"
                 class="w-full"
                 v-model="data.internalValue"
+                :options="data.options"
                 :placeholder="$t('select')"
                 filterable
                 @change="save"
             >
-                <el-option
-                    v-for="(value, idx) in props.definition.values"
-                    :key="idx"
-                    :label="value"
-                    :value="value"
-                >
-                </el-option>
-            </el-select>
+            </el-select-v2>
             <div v-else class="text-xs text-gray-700">
                 {{ $t('invalid_select_value') }}
             </div>
@@ -67,6 +61,7 @@ import {
     ElRadioGroup,
     ElCheckbox,
     ElCheckboxGroup,
+    ElSelectV2,
 } from "element-plus";
 import { reactive, watch } from "vue";
 import isArray from "lodash-es/isArray";
@@ -91,6 +86,7 @@ const $emit = defineEmits(["save:property"]);
 const data = reactive({
     internalValue: props.value,
     hasValidValues: verifySelectValuesAreStrings(props.definition.values),
+    options: props.definition.values ? props.definition.values.map(v => ({ value: v, label: v })) : [],
 });
 
 watch(
@@ -103,7 +99,7 @@ watch(
 watch(
     () => props.definition.values,
     () => {
-        data.items = [...props.definition.values];
+        data.options = props.definition.values ? props.definition.values.map(v => ({ value: v, label: v })) : [];
         data.hasValidValues = verifySelectValuesAreStrings(props.definition.values);
     }
 );
